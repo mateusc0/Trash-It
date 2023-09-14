@@ -1,6 +1,7 @@
 package br.com.fiap.trashit.view
 
 import android.util.Log
+import android.view.translation.UiTranslationStateCallback
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,8 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,12 +27,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import br.com.fiap.trashit.view.navbar.BottomNavigation
 import br.com.fiap.trashit.viewmodel.LixeiraViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
+    val uiState by viewModel.uiState.collectAsState()
+
     val alert: String;
     val buttonText: String;
-    if (viewModel.endereco.lixeira.precisaColeta){
+    if (uiState.precisaColeta){
         alert= "Coleta Ativa"
         buttonText = "Cancelar"
     } else {
@@ -45,57 +55,65 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
         }
         Spacer(modifier = Modifier.height(60.dp))
         Text(text = alert)
-        Text(text = viewModel.endereco.lixeira.precisaColeta.toString())
+        Text(text = uiState.precisaColeta.toString())
         Spacer(modifier = Modifier.height(40.dp))
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
-                    checked = viewModel.temPlastico,
+                    checked = uiState.temPlastico,
+                    enabled = uiState.precisaColeta.not(),
                     onCheckedChange = {
-                        viewModel.temPlastico = it
+                        viewModel.updateTemPlastico(it)
                     }
                 )
                 Text(text = "Plástico")
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
-                    checked = viewModel.temPapel,
+                    checked = uiState.temPapel,
+                    enabled = uiState.precisaColeta.not(),
                     onCheckedChange = {
-                        viewModel.temPapel = it
+                        viewModel.updateTemPapel(it)
                     }
                 )
                 Text(text = "Papel")
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
-                    checked = viewModel.temVidro,
+                    checked = uiState.temVidro,
+                    enabled = uiState.precisaColeta.not(),
                     onCheckedChange = {
-                        viewModel.temVidro = it
+                        viewModel.updateTemVidro(it)
                     }
                 )
                 Text(text = "Vidro")
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
-                    checked = viewModel.temMetal,
+                    checked = uiState.temMetal,
+                    enabled = uiState.precisaColeta.not(),
                     onCheckedChange = {
-                        viewModel.temMetal = it
+                        viewModel.updateTemMetal(it)
                     }
                 )
                 Text(text = "Metal")
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
-                    checked = viewModel.temOrganico,
+                    checked = uiState.temOrganico,
+                    enabled = uiState.precisaColeta.not(),
                     onCheckedChange = {
-                        viewModel.temOrganico = it
+                        viewModel.updateTemOrganico(it)
                     }
                 )
                 Text(text = "Orgânico")
             }
         }
         Spacer(modifier = Modifier.height(40.dp))
-        Button(onClick = { viewModel.alterarLixeira() }) {
+        Button(onClick = {
+            viewModel.alterarLixeira()
+
+        }) {
             Text(text = buttonText)
         }
         Spacer(modifier = Modifier.height(100.dp))

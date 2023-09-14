@@ -1,6 +1,5 @@
 package br.com.fiap.trashit
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -9,16 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -35,6 +29,7 @@ import br.com.fiap.trashit.view.navbar.BottomNavItem
 import br.com.fiap.trashit.view.navbar.BottomNavigation
 import br.com.fiap.trashit.viewmodel.LixeiraViewModel
 import br.com.fiap.trashit.viewmodel.LoginViewModel
+import br.com.fiap.trashit.viewmodel.ColetasViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,7 +91,10 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                             )}
                             composable(route = BottomNavItem.Coletas.screenRoute){
-                                ColetasScreen(navController = navController)
+                                ColetasScreen(
+                                    viewModel = ColetasViewModel(context = applicationContext),
+                                    navController = navController
+                                )
                             }
                             composable(route = BottomNavItem.Conta.screenRoute){
                                 PerfilScreen(navController = navController)
