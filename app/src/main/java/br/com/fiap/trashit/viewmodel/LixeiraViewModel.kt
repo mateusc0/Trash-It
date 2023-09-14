@@ -1,32 +1,21 @@
 package br.com.fiap.trashit.viewmodel
 
-import android.app.Application
 import android.content.Context
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import br.com.fiap.trashit.model.Coleta
 import br.com.fiap.trashit.model.Endereco
 import br.com.fiap.trashit.model.Lixeira
-import br.com.fiap.trashit.service.database.dao.ColetaDao
 import br.com.fiap.trashit.service.database.repository.ColetaRepository
 import br.com.fiap.trashit.service.database.repository.EnderecoRepository
 import br.com.fiap.trashit.viewmodel.uiState.LixeiraUiState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class LixeiraViewModel(context: Context): ViewModel() {
 
     private val enderecoRepository = EnderecoRepository(context)
+    private val coletaRepository = ColetaRepository(context)
 
     private var _endereco = MutableStateFlow<Endereco>(enderecoRepository.buscarEnderecoPorId(1))
     val endereco: StateFlow<Endereco>
@@ -103,6 +92,7 @@ class LixeiraViewModel(context: Context): ViewModel() {
                 temOrganico = _endereco.value.lixeira.temOrganico,
                 precisaColeta = _endereco.value.lixeira.precisaColeta
             ) }
+
         }
 
     }
@@ -131,6 +121,15 @@ class LixeiraViewModel(context: Context): ViewModel() {
         _uiState.update { currentState -> currentState.copy(
             temOrganico = value
         ) }
+    }
+
+    fun realizarColeta():Unit {
+        val coleta = Coleta(
+            id = 0,
+            idEnderecoDono = _endereco.value.id,
+            lixeira = _endereco.value.lixeira
+        )
+        coletaRepository.salvar(coleta)
     }
 
 

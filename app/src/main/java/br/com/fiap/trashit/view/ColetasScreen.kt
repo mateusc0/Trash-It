@@ -1,18 +1,24 @@
 package br.com.fiap.trashit.view
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavController
+import br.com.fiap.trashit.view.components.ScreenLabel
 import br.com.fiap.trashit.viewmodel.ColetasViewModel
 
 @Composable
 fun ColetasScreen(viewModel: ColetasViewModel, navController: NavController) {
-        Text(text = "Histórico")
+        val listaColetas by viewModel.listaColetas.collectAsState()
+
+        ScreenLabel(text = "Histórico")
         LazyColumn(){
-                /*items(){
-                        Text(text = it)
-                }*/
+                items(listaColetas){
+                        Text(text = it.toString())
+                }
         }
 }
 

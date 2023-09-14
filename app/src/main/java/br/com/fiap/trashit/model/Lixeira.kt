@@ -3,7 +3,6 @@ package br.com.fiap.trashit.model
 import androidx.room.ColumnInfo
 import java.sql.Timestamp
 import java.time.Instant
-import java.time.LocalDateTime
 import java.util.Date
 
 data class Lixeira(
