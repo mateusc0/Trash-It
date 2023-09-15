@@ -11,7 +11,7 @@ import java.util.Date
 @Entity(tableName = "tbl_coleta")
 data class Coleta (
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_coleta") val id: Long,
-    @ColumnInfo(name = "data_coleta") val idEnderecoDono: Long,
-    @ColumnInfo(name = "id_endereco_dono") val dtColeta: Date = Timestamp.from(Instant.now()),
+    @ColumnInfo(name = "id_endereco_dono") val idEnderecoDono: Long,
+    @ColumnInfo(name = "data_coleta") val dtColeta: Date = Timestamp.from(Instant.now()),
     @Embedded val lixeira: Lixeira
 )

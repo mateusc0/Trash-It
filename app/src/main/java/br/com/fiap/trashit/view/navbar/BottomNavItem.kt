@@ -1,7 +1,5 @@
 package br.com.fiap.trashit.view.navbar
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Delete
 import br.com.fiap.trashit.R
 
 sealed class BottomNavItem(

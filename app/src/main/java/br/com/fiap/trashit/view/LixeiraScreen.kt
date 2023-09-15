@@ -1,5 +1,6 @@
 package br.com.fiap.trashit.view
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
     val uiState by viewModel.uiState.collectAsState()

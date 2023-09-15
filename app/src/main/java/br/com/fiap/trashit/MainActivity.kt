@@ -36,13 +36,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val enderecoRepository = EnderecoRepository(this)
 
-        if (enderecoRepository.listarEnderecos().isEmpty()) {
-            val end1 = Endereco(
-                0, "09210310", "125", "Rua Exemplo", "",
-                "Bairro Exemplo", "Cidade Exemplo", "Estado Exemplo", Lixeira()
-            )
-            enderecoRepository.salvar(end1)
-        }
+
 
 
 
@@ -50,10 +44,6 @@ class MainActivity : ComponentActivity() {
             "Bairro Atualizada", "Cidade Atualizada", "Estado Atualizada", Lixeira()
         )*/
 
-
-
-
-        Log.e("ENDERECO", enderecoRepository.listarEnderecos().toString())
         /* Log.e("ENDERECO", enderecoRepository.atualizar(end2).toString())
         Log.e("ENDERECO", enderecoRepository.listarEnderecos().toString())
         Log.e("ENDERECO", enderecoRepository.excluir(end2).toString())
@@ -83,6 +73,7 @@ class MainActivity : ComponentActivity() {
                         it -> Log.d("PADDING", "$it")
                         NavHost(navController = navController, startDestination = "login" ) {
                             composable(route = "login"){LoginScreen(
+                                context = applicationContext,
                                 viewModel = LoginViewModel(),
                                 navController = navController
                             )}

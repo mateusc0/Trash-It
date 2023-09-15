@@ -10,7 +10,7 @@ import br.com.fiap.trashit.model.Endereco
 import br.com.fiap.trashit.service.database.dao.ColetaDao
 import br.com.fiap.trashit.service.database.dao.EnderecoDao
 
-@Database(entities = [Endereco::class, Coleta::class], version = 2)
+@Database(entities = [Endereco::class, Coleta::class], version = 3)
 @TypeConverters(Converter::class)
 abstract class TrashItDb: RoomDatabase() {
 

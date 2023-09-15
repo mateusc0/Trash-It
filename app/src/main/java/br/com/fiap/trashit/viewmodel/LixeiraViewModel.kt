@@ -13,10 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class LixeiraViewModel(context: Context): ViewModel() {
-
     private val enderecoRepository = EnderecoRepository(context)
     private val coletaRepository = ColetaRepository(context)
-
     private var _endereco = MutableStateFlow<Endereco>(enderecoRepository.buscarEnderecoPorId(1))
     val endereco: StateFlow<Endereco>
         get() = _endereco
@@ -74,11 +72,11 @@ class LixeiraViewModel(context: Context): ViewModel() {
                 temOrganico = uiState.value.temOrganico
             ))*/
         if (
-            uiState.value.temPlastico.equals(true) ||
-            uiState.value.temPapel.equals(true) ||
-            uiState.value.temMetal.equals(true) ||
-            uiState.value.temVidro.equals(true) ||
-            uiState.value.temOrganico.equals(true)
+            uiState.value.temPlastico ||
+            uiState.value.temPapel ||
+            uiState.value.temMetal ||
+            uiState.value.temVidro ||
+            uiState.value.temOrganico
             ) {
             enderecoRepository.atualizar(enderecoAtt)
             _endereco.update {
@@ -124,12 +122,28 @@ class LixeiraViewModel(context: Context): ViewModel() {
     }
 
     fun realizarColeta():Unit {
-        val coleta = Coleta(
-            id = 0,
-            idEnderecoDono = _endereco.value.id,
-            lixeira = _endereco.value.lixeira
-        )
-        coletaRepository.salvar(coleta)
+        if (_uiState.value.precisaColeta){
+            val coleta = Coleta(
+                id = 0,
+                idEnderecoDono = _endereco.value.id,
+                lixeira = _endereco.value.lixeira
+            )
+            coletaRepository.salvar(coleta)
+            enderecoRepository.atualizar(
+                _endereco.value.copy(lixeira = Lixeira())
+            )
+
+            _endereco.update { enderecoRepository.buscarEnderecoPorId(_endereco.value.id) }
+            _uiState.update { LixeiraUiState(
+                temPlastico = _endereco.value.lixeira.temPlastico,
+                temPapel = _endereco.value.lixeira.temPapel,
+                temMetal = _endereco.value.lixeira.temMetal,
+                temVidro = _endereco.value.lixeira.temVidro,
+                temOrganico = _endereco.value.lixeira.temOrganico,
+                precisaColeta = _endereco.value.lixeira.precisaColeta
+            )}
+        }
+
     }
 
 
