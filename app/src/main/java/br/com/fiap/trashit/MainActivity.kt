@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -34,12 +35,6 @@ import br.com.fiap.trashit.viewmodel.ColetasViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val enderecoRepository = EnderecoRepository(this)
-
-
-
-
-
         /* var end2 = Endereco(1,"09210310","125 Atualizada","Rua Atualizada", "",
             "Bairro Atualizada", "Cidade Atualizada", "Estado Atualizada", Lixeira()
         )*/
@@ -74,7 +69,7 @@ class MainActivity : ComponentActivity() {
                         NavHost(navController = navController, startDestination = "login" ) {
                             composable(route = "login"){LoginScreen(
                                 context = applicationContext,
-                                viewModel = LoginViewModel(),
+                                viewModel = LoginViewModel(context = applicationContext),
                                 navController = navController
                             )}
                             composable(route = BottomNavItem.Lixeira.screenRoute){ LixeiraScreen(

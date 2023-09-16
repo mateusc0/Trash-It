@@ -13,8 +13,8 @@ sealed class BottomNavItem(
         "lixeira"
     )
     object Coletas : BottomNavItem(
-        "Coletas",
-        R.drawable.baseline_checklist_rtl_24,
+        "Histórico",
+        R.drawable.baseline_access_time_24,
         "coletas"
     )
     object Conta : BottomNavItem(

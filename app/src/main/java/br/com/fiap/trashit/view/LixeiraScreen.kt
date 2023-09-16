@@ -6,16 +6,28 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import br.com.fiap.trashit.R
 import br.com.fiap.trashit.view.components.ScreenLabel
 import br.com.fiap.trashit.viewmodel.LixeiraViewModel
 import kotlinx.coroutines.GlobalScope
@@ -27,27 +39,29 @@ import kotlinx.coroutines.launch
 fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val alert: String;
-    val buttonText: String;
+    val alert: String
+    val buttonText: String
+    val buttomColor: Int
     if (uiState.precisaColeta){
         alert= "Coleta Ativa"
         buttonText = "Cancelar"
+        buttomColor = R.color.PlasticRed
+
     } else {
         alert = "Selecione os tipos de resíduos para sua coleta"
         buttonText = "Trash It"
+        buttomColor = R.color.TrashItGreen
     }
 
 
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        ScreenLabel(text = "Lixeira")
+        ScreenLabel(text = "Lixeira", painterResource(id = R.drawable.baseline_delete_24))
         /*Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             Text(text = "Lixeira")
         }*/
-        Text(text = viewModel.endereco.value.id.toString())
         Spacer(modifier = Modifier.height(60.dp))
-        Text(text = alert)
-        Text(text = uiState.precisaColeta.toString())
+        Text(text = alert, fontSize = 22.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 12.dp))
         Spacer(modifier = Modifier.height(40.dp))
         Column {
             LixeiraCheckbox(
@@ -131,21 +145,36 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
                 Text(text = "Orgânico")
             }*/
         }
-        Spacer(modifier = Modifier.height(40.dp))
-        Button(onClick = {
-            viewModel.alterarLixeira()
+        Spacer(modifier = Modifier.height(30.dp))
+        Button(
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorResource(id = buttomColor)
+            ),
+            shape = RoundedCornerShape(24.dp),
+            onClick = {
+                viewModel.alterarLixeira()
 
-            if (uiState.precisaColeta.not()) {
-                GlobalScope.launch {
-                    delay(3000)
-                    Log.d("FIAPER", "It Worked!!!")
-                    viewModel.realizarColeta()
+                if (uiState.precisaColeta.not()) {
+                    GlobalScope.launch {
+                        delay(3000)
+                        Log.d("FIAPER", "It Worked!!!")
+                        viewModel.realizarColeta()
+                    }
                 }
+            },
+            modifier = Modifier
+                .height(80.dp)
+                .width(280.dp)
+        ) {
+            Text(text = buttonText, fontSize = 28.sp)
+
+            if (uiState.precisaColeta.not()){
+                Icon(
+                    painter = painterResource(id = R.drawable.recycle),
+                    contentDescription = "",
+                    modifier = Modifier.padding( start = 15.dp)
+                )
             }
-
-
-        }) {
-            Text(text = buttonText)
         }
         Spacer(modifier = Modifier.height(100.dp))
     }
@@ -163,11 +192,15 @@ fun LixeiraCheckbox(
         Checkbox(
             checked = checkedBoolean,
             enabled = enabledBoolean.not(),
+            colors = CheckboxDefaults.colors(
+                checkedColor = colorResource(id = R.color.TrashItGreen),
+                disabledCheckedColor = colorResource(id = R.color.DisabledGreen)
+            ),
             onCheckedChange = {
                 onCheckedFunction(it)
             }
         )
-        Text(text = text)
+        Text(text = text, fontSize = 24.sp)
     }
 
 }
