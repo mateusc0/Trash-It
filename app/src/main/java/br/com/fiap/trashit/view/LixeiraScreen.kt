@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -58,14 +59,14 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.background(color = Color.White)
+        modifier = Modifier.background(color = Color.White).fillMaxSize()
     ) {
         ScreenLabel(text = "Lixeira", painterResource(id = R.drawable.baseline_delete_24))
         /*Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             Text(text = "Lixeira")
         }*/
         Spacer(modifier = Modifier.height(60.dp))
-        Text(text = alert, fontSize = 22.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 12.dp))
+        Text(text = alert, fontSize = 22.sp, color = Color.Black, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 12.dp))
         Spacer(modifier = Modifier.height(40.dp))
         Column {
             LixeiraCheckbox(
@@ -205,7 +206,7 @@ fun LixeiraCheckbox(
                 onCheckedFunction(it)
             }
         )
-        Text(text = text, fontSize = 24.sp)
+        Text(text = text,color = Color.Black, fontSize = 24.sp)
     }
 
 }
