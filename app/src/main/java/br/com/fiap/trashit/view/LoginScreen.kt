@@ -3,9 +3,6 @@ package br.com.fiap.trashit.view
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.InteractionSource
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,13 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,13 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.fiap.trashit.R
-import br.com.fiap.trashit.service.database.repository.EnderecoRepository
 import br.com.fiap.trashit.view.components.UserInputTextField
 import br.com.fiap.trashit.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(context: Context,viewModel: LoginViewModel, navController: NavController) {
-        val enderecoRepository = EnderecoRepository(context)
+    val conta by viewModel.usuario.collectAsState()
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -60,7 +55,7 @@ fun LoginScreen(context: Context,viewModel: LoginViewModel, navController: NavCo
                     painter = painterResource(id = R.drawable.trash),
                     contentDescription = null,
                     modifier = Modifier.size(64.dp),
-                    tint = colorResource(id = R.color.TrashItGreen)
+                    tint = colorResource(id = R.color.trashIt_green)
                 )
             }
             Spacer(modifier = Modifier.height(120.dp))
@@ -71,8 +66,8 @@ fun LoginScreen(context: Context,viewModel: LoginViewModel, navController: NavCo
             )*/
             UserInputTextField(
             text = "Email",
-            value = viewModel.email,
-            onCheckedFunction = viewModel::updateEmail,
+            value = conta.email,
+            onCheckedFunction = {},
             visualTransformation = VisualTransformation.None
         )
 
@@ -85,24 +80,26 @@ fun LoginScreen(context: Context,viewModel: LoginViewModel, navController: NavCo
             )*/
             UserInputTextField(
                 text = "Senha",
-                value = viewModel.password,
-                onCheckedFunction = viewModel::updatePassword,
+                value = conta.senha,
+                onCheckedFunction = {},
                 visualTransformation = PasswordVisualTransformation()
             )
             Text(
                 text = "Esqueci minha senha",
-                color = colorResource(id = R.color.ShadeGrey),
+                color = colorResource(id = R.color.shady_grey),
                 fontSize = 15.sp,
                 textDecoration = TextDecoration.Underline,
                 textAlign = TextAlign.Start,
-                modifier = Modifier.fillMaxWidth().padding(top = 5.dp, start = 45.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp, start = 45.dp)
             )
             Spacer(modifier = Modifier.height(50.dp))
             LoginButton(navController = navController, onCheckedFunction = viewModel::login)
             Spacer(modifier = Modifier.height(50.dp))
             Text(
                 text = "TrashIt Company",
-                color = colorResource(id = R.color.ShadeGrey),
+                color = colorResource(id = R.color.shady_grey),
                 fontSize = 15.sp
             )
 

@@ -1,8 +1,6 @@
 package br.com.fiap.trashit.view
 
-import android.widget.Space
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,7 +25,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -41,8 +37,6 @@ import br.com.fiap.trashit.model.Lixeira
 import br.com.fiap.trashit.view.components.ScreenLabel
 import br.com.fiap.trashit.viewmodel.ColetasViewModel
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Date
 
 @Composable
@@ -52,7 +46,7 @@ fun ColetasScreen(viewModel: ColetasViewModel, navController: NavController) {
 
         Box(modifier = Modifier
                 .fillMaxSize()
-                .background(colorResource(id = R.color.ShadeGrey))
+                .background(colorResource(id = R.color.shady_grey))
         ) {
                 if (listaColetas.isEmpty()){
                         Text(
@@ -98,7 +92,10 @@ fun CardColeta(
 ) {
         val dataFormatada = simpleDateFormat.format(dataColeta)
         Card(
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(
+                        containerColor = Color.White,
+                        contentColor = Color.Black
+                ),
                 modifier = Modifier
                         .fillMaxWidth()
                         .height(150.dp)
@@ -108,41 +105,47 @@ fun CardColeta(
                      verticalArrangement = Arrangement.SpaceBetween
              ) {
                      Row(
-                             modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 10.dp),
+                             modifier = Modifier
+                                     .fillMaxWidth()
+                                     .padding(vertical = 10.dp, horizontal = 10.dp),
                              horizontalArrangement = Arrangement.SpaceBetween,
                              verticalAlignment = Alignment.CenterVertically
                      ) {
-                             Text(text = "Coleta Realizada - $dataFormatada", fontSize = 20.sp)
+                             Text(
+                                     text = "Coleta Realizada - $dataFormatada",
+                                     fontSize = 20.sp,
+                                     color = Color.Black
+                             )
                              Icon(
                                      imageVector = Icons.Rounded.Check,
                                      contentDescription = null,
-                                     tint = colorResource(id = R.color.TrashItGreen)
+                                     tint = colorResource(id = R.color.trashIt_green)
                              )
                      }
                      Row(modifier = Modifier.padding(vertical = 10.dp, horizontal = 15.dp)) {
                              MaterialLabel(
                                      materialBoolean = lixeira.temPlastico,
-                                     materialColor = colorResource(id = R.color.PlasticRed),
+                                     materialColor = colorResource(id = R.color.plastic_red),
                                      materialName = "Plástico"
                              )
                              MaterialLabel(
                                      materialBoolean = lixeira.temPapel,
-                                     materialColor = colorResource(id = R.color.PaperBlue),
+                                     materialColor = colorResource(id = R.color.paper_blue),
                                      materialName = "Papel"
                              )
                              MaterialLabel(
                                      materialBoolean = lixeira.temVidro,
-                                     materialColor = colorResource(id = R.color.VitroGreen),
+                                     materialColor = colorResource(id = R.color.vitro_green),
                                      materialName = "Vidro"
                              )
                              MaterialLabel(
                                      materialBoolean = lixeira.temMetal,
-                                     materialColor = colorResource(id = R.color.MetalYellow),
+                                     materialColor = colorResource(id = R.color.metal_yellow),
                                      materialName = "Metal"
                              )
                              MaterialLabel(
                                      materialBoolean = lixeira.temOrganico,
-                                     materialColor = colorResource(id = R.color.OrganicOrange),
+                                     materialColor = colorResource(id = R.color.organic_orange),
                                      materialName = "Orgânico"
                              )
 

@@ -1,13 +1,10 @@
 package br.com.fiap.trashit
 
 import android.Manifest
-import android.app.AlertDialog
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.util.Rational
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -18,11 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -38,21 +32,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.window.Dialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import br.com.fiap.trashit.service.database.repository.UsuarioRepository
 import br.com.fiap.trashit.ui.theme.TrashItTheme
 import br.com.fiap.trashit.view.ColetasScreen
 import br.com.fiap.trashit.view.LixeiraScreen
 import br.com.fiap.trashit.view.LoginScreen
-import br.com.fiap.trashit.view.PerfilScreen
+import br.com.fiap.trashit.view.ContaScreen
 import br.com.fiap.trashit.view.navbar.BottomNavItem
 import br.com.fiap.trashit.view.navbar.BottomNavigation
 import br.com.fiap.trashit.viewmodel.ColetasViewModel
+import br.com.fiap.trashit.viewmodel.ContaViewModel
 import br.com.fiap.trashit.viewmodel.LixeiraViewModel
 import br.com.fiap.trashit.viewmodel.LoginViewModel
 import kotlin.system.exitProcess
@@ -132,6 +126,18 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
+                    val usuarioRepository = UsuarioRepository(applicationContext)
+                    val isLogged = if(usuarioRepository
+                        .listarUsuariosEndereco(1)
+                        .isEmpty()) {
+                            false
+                    } else {
+                        usuarioRepository.buscarUsuarioPorId(1).isLogged
+                    }
+
+                    val startDestination = if(isLogged) BottomNavItem.Lixeira.screenRoute
+                        else "login"
+
                     val navController = rememberNavController()
                     var showBottomBar by rememberSaveable {
                         mutableStateOf(false)
@@ -142,12 +148,10 @@ class MainActivity : ComponentActivity() {
                         "login" -> false
                         else -> true
                     }
-
-
                     Scaffold(
                         bottomBar = { if(showBottomBar) BottomNavigation(navController = navController) }) {
-                        it -> Log.d("PADDING", "$it")
-                        NavHost(navController = navController, startDestination = "login" ) {
+                        Log.d("PADDING", "$it")
+                        NavHost(navController = navController, startDestination = startDestination ) {
                             composable(route = "login"){LoginScreen(
                                 context = applicationContext,
                                 viewModel = LoginViewModel(context = applicationContext),
@@ -164,7 +168,10 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             composable(route = BottomNavItem.Conta.screenRoute){
-                                PerfilScreen(navController = navController)
+                                ContaScreen(
+                                    viewModel = ContaViewModel(context = applicationContext),
+                                    navController = navController
+                                )
                             }
                         }
                     }
@@ -184,7 +191,7 @@ fun NotificationAlert(context: MainActivity, launcher: ManagedActivityResultLaun
         },
         confirmButton = {
             Button(
-                colors = ButtonDefaults.textButtonColors(containerColor = colorResource(id = R.color.TrashItGreen)) ,
+                colors = ButtonDefaults.textButtonColors(containerColor = colorResource(id = R.color.trashIt_green)) ,
                 onClick = {
                     launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
@@ -194,7 +201,7 @@ fun NotificationAlert(context: MainActivity, launcher: ManagedActivityResultLaun
         },
         dismissButton = {
             Button(
-                colors = ButtonDefaults.textButtonColors(containerColor = colorResource(id = R.color.PlasticRed)) ,
+                colors = ButtonDefaults.textButtonColors(containerColor = colorResource(id = R.color.plastic_red)) ,
                 onClick = {
                     context.finishAndRemoveTask()
                     exitProcess(0)
@@ -208,7 +215,7 @@ fun NotificationAlert(context: MainActivity, launcher: ManagedActivityResultLaun
         icon = { Icon(
             imageVector = Icons.Default.Notifications,
             contentDescription = "",
-            tint = colorResource(id = R.color.TrashItGreen)
+            tint = colorResource(id = R.color.trashIt_green)
         )},
         containerColor = Color.White,
 

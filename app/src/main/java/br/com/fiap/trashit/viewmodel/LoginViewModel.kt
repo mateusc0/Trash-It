@@ -7,30 +7,45 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import br.com.fiap.trashit.model.Endereco
 import br.com.fiap.trashit.model.Lixeira
+import br.com.fiap.trashit.model.Usuario
 import br.com.fiap.trashit.service.database.repository.EnderecoRepository
+import br.com.fiap.trashit.service.database.repository.UsuarioRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class LoginViewModel(context: Context): ViewModel() {
-    val enderecoRepository = EnderecoRepository(context)
+    private val enderecoRepository = EnderecoRepository(context)
+    private val usuarioRepository = UsuarioRepository(context)
 
-    var email by mutableStateOf("exemploEmail@gmail.com")
-        private set
-    var password by mutableStateOf("example")
-        private set
+    private val usuarioIntent = if (usuarioRepository.listarUsuariosEndereco(1).isEmpty()) {
+        Usuario(
+            id = 1,
+            idEndereco = 1,
+            nomeCompleto = "Seu Nome",
+            cpf = "00000000000",
+            email = "seuEmail@email.com",
+            celular = "11900000000",
+            senha = "senha",
+            isLogged = false
+        )
+    } else {
+        usuarioRepository.buscarUsuarioPorId(1)
+    }
 
-    fun updateEmail(emailInput: String) {
-        email = emailInput
-    }
-    fun updatePassword(passwordInput: String) {
-        password = passwordInput
-    }
+    private val _usuario = MutableStateFlow<Usuario>(usuarioIntent)
+    val usuario: StateFlow<Usuario>
+        get() = _usuario
 
     fun login(){
         if (enderecoRepository.listarEnderecos().isEmpty()) {
-            val end = Endereco(
-                0, "09211111", "125", "Rua Exemplo", "",
-                "Bairro Exemplo", "Cidade Exemplo", "Estado Exemplo", Lixeira()
+            val endereco = Endereco(
+                id = 1, cep = "09211111", numero = "125", rua = "Rua Exemplo", complemento = "",
+                bairro = "Bairro Exemplo", cidade = "Cidade Exemplo", uf = "Estado Exemplo", Lixeira()
             )
-            enderecoRepository.salvar(end)
+            enderecoRepository.salvar(endereco)
+            usuarioRepository.salvar(_usuario.value)
         }
+        usuarioRepository.atualizar(_usuario.value.copy(isLogged = true))
     }
 }

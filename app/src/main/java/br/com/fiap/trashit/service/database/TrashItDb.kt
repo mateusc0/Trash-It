@@ -7,15 +7,18 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import br.com.fiap.trashit.model.Coleta
 import br.com.fiap.trashit.model.Endereco
+import br.com.fiap.trashit.model.Usuario
 import br.com.fiap.trashit.service.database.dao.ColetaDao
 import br.com.fiap.trashit.service.database.dao.EnderecoDao
+import br.com.fiap.trashit.service.database.dao.UsuarioDao
 
-@Database(entities = [Endereco::class, Coleta::class], version = 3)
+@Database(entities = [Endereco::class, Coleta::class, Usuario::class], version = 4)
 @TypeConverters(Converter::class)
 abstract class TrashItDb: RoomDatabase() {
 
     abstract fun enderecoDao(): EnderecoDao
     abstract fun coletaDao(): ColetaDao
+    abstract fun usuarioDao(): UsuarioDao
 
     companion object{
         private lateinit var instance: TrashItDb

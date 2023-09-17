@@ -2,6 +2,7 @@ package br.com.fiap.trashit.view
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,17 +46,20 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
     if (uiState.precisaColeta){
         alert= "Coleta Ativa"
         buttonText = "Cancelar"
-        buttomColor = R.color.PlasticRed
+        buttomColor = R.color.plastic_red
 
     } else {
         alert = "Selecione os tipos de resíduos para sua coleta"
         buttonText = "Trash It"
-        buttomColor = R.color.TrashItGreen
+        buttomColor = R.color.trashIt_green
     }
 
 
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.background(color = Color.White)
+    ) {
         ScreenLabel(text = "Lixeira", painterResource(id = R.drawable.baseline_delete_24))
         /*Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             Text(text = "Lixeira")
@@ -166,13 +170,14 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
                 .height(80.dp)
                 .width(280.dp)
         ) {
-            Text(text = buttonText, fontSize = 28.sp)
+            Text(text = buttonText, fontSize = 28.sp, color = Color.White)
 
             if (uiState.precisaColeta.not()){
                 Icon(
                     painter = painterResource(id = R.drawable.recycle),
                     contentDescription = "",
-                    modifier = Modifier.padding( start = 15.dp)
+                    modifier = Modifier.padding( start = 15.dp),
+                    tint = Color.White
                 )
             }
         }
@@ -193,8 +198,8 @@ fun LixeiraCheckbox(
             checked = checkedBoolean,
             enabled = enabledBoolean.not(),
             colors = CheckboxDefaults.colors(
-                checkedColor = colorResource(id = R.color.TrashItGreen),
-                disabledCheckedColor = colorResource(id = R.color.DisabledGreen)
+                checkedColor = colorResource(id = R.color.trashIt_green),
+                disabledCheckedColor = colorResource(id = R.color.disabled_green)
             ),
             onCheckedChange = {
                 onCheckedFunction(it)

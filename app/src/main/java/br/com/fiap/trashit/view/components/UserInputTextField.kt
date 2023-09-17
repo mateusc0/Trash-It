@@ -2,6 +2,7 @@ package br.com.fiap.trashit.view.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -19,19 +20,26 @@ fun UserInputTextField(
     value: String,
     onCheckedFunction: (it: String) -> Unit,
     visualTransformation: VisualTransformation,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
+    enabled: Boolean = false,
+    modifier: Modifier = Modifier.fillMaxWidth().padding(horizontal = 40.dp)
 ) {
     OutlinedTextField(
         label = { Text(text = text, color = Color.White) },
         value = value,
         onValueChange = { onCheckedFunction(it) },
         visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        enabled = enabled,
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = Color.White,
-            focusedBorderColor = colorResource(id = R.color.TrashItGreen),
-            cursorColor = Color.White,
+            focusedBorderColor = colorResource(id = R.color.trashIt_green),
+            cursorColor = colorResource(id = R.color.trashIt_green),
             unfocusedTextColor = Color.White,
-            focusedTextColor = Color.White
+            focusedTextColor = Color.White,
+            disabledBorderColor = Color.DarkGray,
+            disabledTextColor = Color.LightGray,
         ),
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 40.dp)
+        modifier = modifier
     )
 }

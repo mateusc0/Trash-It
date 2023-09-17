@@ -7,12 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="PlasticRed">#F91C1C</color>
-    <color name="PaperBlue">#1A71F4</color>
-    <color name="VitroGreen">#31CB2E</color>
-    <color name="MetalYellow">#E6DD0B</color>
-    <color name="OrganicOrange">#DE8500</color>
-    <color name="TrashItGreen">#A8E890</color>
-    <color name="DisabledGreen">#425F57</color>
-    <color name="ShadeGrey">#343332</color>
+    <color name="plastic_red">#F91C1C</color>
+    <color name="paper_blue">#1A71F4</color>
+    <color name="vitro_green">#31CB2E</color>
+    <color name="metal_yellow">#E6DD0B</color>
+    <color name="organic_orange">#DE8500</color>
+    <color name="trashIt_green">#A8E890</color>
+    <color name="disabled_green">#425F57</color>
+    <color name="shady_grey">#343332</color>
+    <color name="disabled_red">#96F91C1C</color>
 </resources>
