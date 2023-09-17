@@ -43,6 +43,7 @@ import java.util.Date
 fun ColetasScreen(viewModel: ColetasViewModel, navController: NavController) {
         val listaColetas by viewModel.listaColetas.collectAsState()
         val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val simpleTimeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
 
         Box(modifier = Modifier
                 .fillMaxSize()
@@ -70,16 +71,15 @@ fun ColetasScreen(viewModel: ColetasViewModel, navController: NavController) {
                                                 idColeta = it.id,
                                                 dataColeta = it.dtColeta,
                                                 lixeira = it.lixeira,
-                                                simpleDateFormat = simpleDateFormat
+                                                simpleDateFormat = simpleDateFormat,
+                                                simpleTimeFormat = simpleTimeFormat
                                         )
                                 }
 
                                 item { Spacer(modifier = Modifier.height(20.dp)) }
                         }
                 }
-                
                 ScreenLabel(text = "Histórico", painterResource(id = R.drawable.baseline_access_time_24))
-
         }
 }
 
@@ -89,8 +89,11 @@ fun CardColeta(
         dataColeta: Date,
         lixeira: Lixeira,
         simpleDateFormat: SimpleDateFormat,
+        simpleTimeFormat: SimpleDateFormat
 ) {
         val dataFormatada = simpleDateFormat.format(dataColeta)
+        val horaColeta = simpleTimeFormat.format(dataColeta)
+
         Card(
                 colors = CardDefaults.cardColors(
                         containerColor = Color.White,
@@ -112,7 +115,7 @@ fun CardColeta(
                              verticalAlignment = Alignment.CenterVertically
                      ) {
                              Text(
-                                     text = "Coleta Realizada - $dataFormatada",
+                                     text = "Coleta Realizada - $dataFormatada\n$horaColeta",
                                      fontSize = 20.sp,
                                      color = Color.Black
                              )

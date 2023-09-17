@@ -21,6 +21,6 @@ interface ColetaDao {
     @Query("SELECT * FROM tbl_coleta WHERE id_coleta = :id")
     fun buscarColetaPorId(id: Long): Coleta
 
-    @Query("Select * FROM tbl_coleta WHERE id_endereco_dono = :idResidencia ORDER BY data_coleta ASC")
+    @Query("Select * FROM tbl_coleta WHERE id_endereco_dono = :idResidencia ORDER BY data_coleta DESC")
     fun listarColetas(idResidencia: Long): List<Coleta>
 }

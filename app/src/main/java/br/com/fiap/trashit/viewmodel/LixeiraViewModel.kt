@@ -18,6 +18,7 @@ import br.com.fiap.trashit.model.Endereco
 import br.com.fiap.trashit.model.Lixeira
 import br.com.fiap.trashit.service.database.repository.ColetaRepository
 import br.com.fiap.trashit.service.database.repository.EnderecoRepository
+import br.com.fiap.trashit.view.components.trashItToast
 import br.com.fiap.trashit.viewmodel.uiState.LixeiraUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,7 +52,7 @@ class LixeiraViewModel(val context: Context): ViewModel() {
 
 
 
-    fun alterarLixeira(): Unit {
+    fun alterarLixeira(toastText: String): Unit {
 
 
         val enderecoAtt = _endereco.value.copy(
@@ -102,8 +103,9 @@ class LixeiraViewModel(val context: Context): ViewModel() {
                 temOrganico = _endereco.value.lixeira.temOrganico,
                 precisaColeta = _endereco.value.lixeira.precisaColeta
             ) }
-
+            trashItToast(text = toastText, context = context)
         }
+        trashItToast(text = "Sua lixeira já está vazia", context = context)
 
     }
 

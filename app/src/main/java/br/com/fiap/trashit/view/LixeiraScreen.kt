@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.com.fiap.trashit.R
 import br.com.fiap.trashit.view.components.ScreenLabel
+import br.com.fiap.trashit.view.components.trashItToast
 import br.com.fiap.trashit.viewmodel.LixeiraViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -41,19 +43,25 @@ import kotlinx.coroutines.launch
 fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
     val uiState by viewModel.uiState.collectAsState()
 
+    val context = LocalContext.current
+
     val alert: String
     val buttonText: String
     val buttomColor: Int
+    val toastText: String
     if (uiState.precisaColeta){
         alert= "Coleta Ativa"
         buttonText = "Cancelar"
         buttomColor = R.color.plastic_red
+        toastText = "Coleta cancelada"
 
     } else {
         alert = "Selecione os tipos de resíduos para sua coleta"
         buttonText = "Trash It"
         buttomColor = R.color.trashIt_green
+        toastText = "Nossa equipe foi notificada"
     }
+
 
 
 
@@ -133,7 +141,7 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
                 Checkbox(
                     checked = uiState.temMetal,
                     enabled = uiState.precisaColeta.not(),
-                    onCheckedChange = {
+                    onCheckedChange = {LocalContext.current
                         viewModel.updateTemMetal(it)
                     }
                 )
@@ -157,7 +165,7 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
             ),
             shape = RoundedCornerShape(24.dp),
             onClick = {
-                viewModel.alterarLixeira()
+                viewModel.alterarLixeira(toastText = toastText)
 
                 if (uiState.precisaColeta.not()) {
                     GlobalScope.launch {

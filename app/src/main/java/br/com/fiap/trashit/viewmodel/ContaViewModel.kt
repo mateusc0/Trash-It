@@ -1,16 +1,19 @@
 package br.com.fiap.trashit.viewmodel
 
 import android.content.Context
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import br.com.fiap.trashit.model.Endereco
 import br.com.fiap.trashit.model.Usuario
 import br.com.fiap.trashit.service.database.repository.EnderecoRepository
 import br.com.fiap.trashit.service.database.repository.UsuarioRepository
+import br.com.fiap.trashit.view.components.trashItToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class ContaViewModel(context: Context): ViewModel() {
+class ContaViewModel(val context: Context): ViewModel() {
     private val enderecoRepository = EnderecoRepository(context)
     private val usuarioRepository = UsuarioRepository(context)
 
@@ -54,7 +57,16 @@ class ContaViewModel(context: Context): ViewModel() {
     }
 
     fun updateUsuario():Unit {
-        usuarioRepository.atualizar(_usuario.value)
-        _usuario.update { usuarioRepository.buscarUsuarioPorId(1) }
+        if (_usuario.value != usuarioRepository.buscarUsuarioPorId(1)) {
+                usuarioRepository.atualizar(_usuario.value)
+                _usuario.update {
+                    usuarioRepository.buscarUsuarioPorId(1)
+                }
+                trashItToast(text = "Usuário atualizado", context = context)
+        } else {
+            trashItToast(text = "Altere alguma informação", context= context )
+        }
     }
+
+
 }

@@ -1,5 +1,6 @@
 package br.com.fiap.trashit.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -24,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +37,7 @@ import br.com.fiap.trashit.R
 import br.com.fiap.trashit.view.components.UserInputTextField
 import br.com.fiap.trashit.viewmodel.LoginViewModel
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun LoginScreen(context: Context,viewModel: LoginViewModel, navController: NavController) {
     val conta by viewModel.usuario.collectAsState()
@@ -50,7 +53,7 @@ fun LoginScreen(context: Context,viewModel: LoginViewModel, navController: NavCo
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.height(120.dp))
-                Text(fontSize = 48.sp,text = "TrashIt", color = Color.White)
+                Text(fontSize = 48.sp,text = "TrashIt", fontWeight = FontWeight.Light, color = Color.White)
                 Icon(
                     painter = painterResource(id = R.drawable.trash),
                     contentDescription = null,
