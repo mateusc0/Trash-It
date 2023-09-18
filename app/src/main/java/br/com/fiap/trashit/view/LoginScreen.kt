@@ -121,7 +121,8 @@ fun LoginButton(navController: NavController, onCheckedFunction: () -> Unit) {
     ) {
         Text(
             text = "Entrar",
-            fontSize = 16.sp,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Light,
             color = Color.White,
             modifier = Modifier.padding(vertical = 10.dp, horizontal = 50.dp)
         )

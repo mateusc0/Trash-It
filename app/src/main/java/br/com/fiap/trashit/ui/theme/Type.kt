@@ -11,11 +11,15 @@ import br.com.fiap.trashit.R
 // Set of Material typography styles to start with
 
 val LatoFont = FontFamily(
-    Font(R.font.lato_regular, FontWeight.Normal)
+    Font(R.font.lato_regular, FontWeight.Normal),
+    Font(R.font.lato_bold, FontWeight.Bold),
+    Font(R.font.lato_light, FontWeight.Light),
+    Font(R.font.lato_thin, FontWeight.Thin)
+
 )
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = LatoFont,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,

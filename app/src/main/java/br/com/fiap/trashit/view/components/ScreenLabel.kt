@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.com.fiap.trashit.R
@@ -37,7 +38,8 @@ fun ScreenLabel(text: String, icon: Painter) {
             Text(
                 text = text,
                 color = Color.White,
-                fontSize = 18.sp,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Light,
                 modifier = Modifier.padding(start = 12.dp, end = 2.dp, top = 2.dp, bottom = 2.dp)
             )
             Icon(

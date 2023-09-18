@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,8 +44,6 @@ import kotlinx.coroutines.launch
 fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val context = LocalContext.current
-
     val alert: String
     val buttonText: String
     val buttomColor: Int
@@ -61,10 +60,6 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
         buttomColor = R.color.trashIt_green
         toastText = "Nossa equipe foi notificada"
     }
-
-
-
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.background(color = Color.White).fillMaxSize()
@@ -73,9 +68,9 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
         /*Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             Text(text = "Lixeira")
         }*/
-        Spacer(modifier = Modifier.height(60.dp))
-        Text(text = alert, fontSize = 22.sp, color = Color.Black, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 12.dp))
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(35.dp))
+        Text(text = alert, fontSize = 28.sp, fontWeight = FontWeight.Light, color = Color.Black, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = 12.dp))
+        Spacer(modifier = Modifier.height(35.dp))
         Column {
             LixeiraCheckbox(
                 text = "Plástico",
@@ -158,7 +153,7 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
                 Text(text = "Orgânico")
             }*/
         }
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(50.dp))
         Button(
             colors = ButtonDefaults.buttonColors(
                 containerColor = colorResource(id = buttomColor)
@@ -170,7 +165,6 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
                 if (uiState.precisaColeta.not()) {
                     GlobalScope.launch {
                         delay(3000)
-                        Log.d("FIAPER", "It Worked!!!")
                         viewModel.realizarColeta()
                     }
                 }
@@ -179,7 +173,7 @@ fun LixeiraScreen(viewModel: LixeiraViewModel, navController: NavController) {
                 .height(80.dp)
                 .width(280.dp)
         ) {
-            Text(text = buttonText, fontSize = 28.sp, color = Color.White)
+            Text(text = buttonText, fontSize = 40.sp, fontWeight = FontWeight.Light, color = Color.White)
 
             if (uiState.precisaColeta.not()){
                 Icon(
@@ -214,7 +208,7 @@ fun LixeiraCheckbox(
                 onCheckedFunction(it)
             }
         )
-        Text(text = text,color = Color.Black, fontSize = 24.sp)
+        Text(text = text,color = Color.Black, fontSize = 26.sp, fontWeight = FontWeight.Light)
     }
 
 }

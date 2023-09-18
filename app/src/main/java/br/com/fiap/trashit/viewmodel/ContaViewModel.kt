@@ -1,6 +1,7 @@
 package br.com.fiap.trashit.viewmodel
 
 import android.content.Context
+import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
@@ -12,8 +13,10 @@ import br.com.fiap.trashit.view.components.trashItToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import java.util.regex.Pattern
 
 class ContaViewModel(val context: Context): ViewModel() {
+    val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\$".toRegex()
     private val enderecoRepository = EnderecoRepository(context)
     private val usuarioRepository = UsuarioRepository(context)
 
@@ -24,6 +27,23 @@ class ContaViewModel(val context: Context): ViewModel() {
     private var _endereco = MutableStateFlow<Endereco>(enderecoRepository.buscarEnderecoPorId(1))
     val endereco: StateFlow<Endereco>
         get() = _endereco
+
+    private var _emailError = MutableStateFlow<Boolean>(false)
+    val emailError: StateFlow<Boolean>
+        get() = _emailError
+
+    private var _senhaError = MutableStateFlow<Boolean>(false)
+    val senhaError: StateFlow<Boolean>
+        get() = _senhaError
+
+    private var _senhaVisible = MutableStateFlow<Boolean>(false)
+    val senhaVisible: StateFlow<Boolean>
+        get() = _senhaVisible
+
+    private var _abrirAlterarSenha = MutableStateFlow<Boolean>(false)
+    val abrirAlterarSenha: StateFlow<Boolean>
+        get() = _abrirAlterarSenha
+
 
     fun updateEmail(email: String):Unit {
         _usuario.update { currentState ->
@@ -40,13 +60,12 @@ class ContaViewModel(val context: Context): ViewModel() {
         }
     }
     fun updateSenha(senha: String):Unit {
-        _usuario.update { currentState ->
-            currentState.copy(
-                senha = senha
-            )
+        val usuarioBanco = usuarioRepository.buscarUsuarioPorId(1)
+        _usuario.update {
+            usuarioBanco.copy(senha = senha)
         }
+        updateUsuario()
     }
-
     fun logout():Unit {
         _usuario.update { currentState ->
             currentState.copy(
@@ -57,7 +76,7 @@ class ContaViewModel(val context: Context): ViewModel() {
     }
 
     fun updateUsuario():Unit {
-        if (_usuario.value != usuarioRepository.buscarUsuarioPorId(1)) {
+        if (_usuario.value != usuarioRepository.buscarUsuarioPorId(1) && !_emailError.value) {
                 usuarioRepository.atualizar(_usuario.value)
                 _usuario.update {
                     usuarioRepository.buscarUsuarioPorId(1)
@@ -66,6 +85,23 @@ class ContaViewModel(val context: Context): ViewModel() {
         } else {
             trashItToast(text = "Altere alguma informação", context= context )
         }
+    }
+
+    fun emailErrorCheck() {
+        if (Patterns.EMAIL_ADDRESS.matcher(_usuario.value.email).matches() ||
+                _usuario.value.email.isEmpty()){
+            _emailError.update { false }
+        } else {
+            _emailError.update { true }
+        }
+    }
+
+    fun alterarVisualizacaoSenha() {
+        _senhaVisible.update { _senhaVisible.value.not() }
+    }
+
+    fun toggleAlterarSenha() {
+        _abrirAlterarSenha.update { _abrirAlterarSenha.value.not() }
     }
 
 

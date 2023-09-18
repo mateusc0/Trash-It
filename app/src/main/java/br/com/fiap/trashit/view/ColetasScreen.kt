@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,7 +65,7 @@ fun ColetasScreen(viewModel: ColetasViewModel, navController: NavController) {
                                         end = 2.dp
                                 )
                         ) {
-                                item { Spacer(modifier = Modifier.height(55.dp)) }
+                                item { Spacer(modifier = Modifier.height(45.dp)) }
 
                                 items(listaColetas) {
                                         CardColeta(
@@ -76,7 +77,7 @@ fun ColetasScreen(viewModel: ColetasViewModel, navController: NavController) {
                                         )
                                 }
 
-                                item { Spacer(modifier = Modifier.height(20.dp)) }
+                                item { Spacer(modifier = Modifier.height(15.dp)) }
                         }
                 }
                 ScreenLabel(text = "Histórico", painterResource(id = R.drawable.baseline_access_time_24))
@@ -112,11 +113,12 @@ fun CardColeta(
                                      .fillMaxWidth()
                                      .padding(vertical = 10.dp, horizontal = 10.dp),
                              horizontalArrangement = Arrangement.SpaceBetween,
-                             verticalAlignment = Alignment.CenterVertically
+                             verticalAlignment = Alignment.Top
                      ) {
                              Text(
                                      text = "Coleta Realizada - $dataFormatada\n$horaColeta",
-                                     fontSize = 20.sp,
+                                     fontSize = 26.sp,
+                                     fontWeight = FontWeight.Light,
                                      color = Color.Black
                              )
                              Icon(
@@ -162,7 +164,7 @@ fun CardColeta(
 fun MaterialLabel(materialBoolean: Boolean, materialColor: Color, materialName: String) {
         if (materialBoolean){
                 Box(modifier = Modifier
-                        .padding(horizontal = 2.dp)
+                        .padding(end = 4.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .background(materialColor)
                 ){
