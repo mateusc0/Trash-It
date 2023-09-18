@@ -32,9 +32,9 @@ class ContaViewModel(val context: Context): ViewModel() {
     val emailError: StateFlow<Boolean>
         get() = _emailError
 
-    private var _senhaError = MutableStateFlow<Boolean>(false)
-    val senhaError: StateFlow<Boolean>
-        get() = _senhaError
+    private var _celularError = MutableStateFlow<Boolean>(false)
+    val celularError: StateFlow<Boolean>
+        get() = _celularError
 
     private var _senhaVisible = MutableStateFlow<Boolean>(false)
     val senhaVisible: StateFlow<Boolean>
@@ -76,7 +76,11 @@ class ContaViewModel(val context: Context): ViewModel() {
     }
 
     fun updateUsuario():Unit {
-        if (_usuario.value != usuarioRepository.buscarUsuarioPorId(1) && !_emailError.value) {
+        emailErrorCheck()
+        celularErrorCheck()
+        if (_usuario.value != usuarioRepository.buscarUsuarioPorId(1) && !_emailError.value
+            && !_celularError.value
+            ) {
                 usuarioRepository.atualizar(_usuario.value)
                 _usuario.update {
                     usuarioRepository.buscarUsuarioPorId(1)
@@ -87,12 +91,20 @@ class ContaViewModel(val context: Context): ViewModel() {
         }
     }
 
-    fun emailErrorCheck() {
+    private fun emailErrorCheck() {
         if (Patterns.EMAIL_ADDRESS.matcher(_usuario.value.email).matches() ||
                 _usuario.value.email.isEmpty()){
             _emailError.update { false }
         } else {
             _emailError.update { true }
+        }
+    }
+
+    private fun celularErrorCheck() {
+        if (_usuario.value.celular.length == 11){
+            _celularError.update { false }
+        } else {
+            _celularError.update { true }
         }
     }
 

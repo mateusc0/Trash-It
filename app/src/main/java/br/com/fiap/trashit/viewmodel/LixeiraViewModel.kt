@@ -192,7 +192,7 @@ class LixeiraViewModel(val context: Context): ViewModel() {
             if(notificationChannel == null){ notificationChannel = NotificationChannel(
                     CHANNEL_ID,
                     "Trash It Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
                 )
                     notificationChannel.enableVibration(true)
                 }

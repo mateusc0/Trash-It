@@ -55,6 +55,8 @@ fun ColetasScreen(viewModel: ColetasViewModel, navController: NavController) {
                                 text = "Nenhuma coleta realizada até o momento",
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Light,
                                 modifier = Modifier.align(alignment = Alignment.Center)
                         )
                 } else {

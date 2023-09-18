@@ -1,5 +1,6 @@
 package br.com.fiap.trashit.view
 
+import android.telephony.PhoneNumberUtils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -52,13 +53,14 @@ import br.com.fiap.trashit.R
 import br.com.fiap.trashit.view.components.ScreenLabel
 import br.com.fiap.trashit.view.components.UserInputTextField
 import br.com.fiap.trashit.viewmodel.ContaViewModel
+import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContaScreen(viewModel: ContaViewModel, navController: NavController) {
         val conta by viewModel.usuario.collectAsState()
         val endereco by viewModel.endereco.collectAsState()
         val emailError by viewModel.emailError.collectAsState()
+        val celularError by viewModel.celularError.collectAsState()
         val senhaVisible by viewModel.senhaVisible.collectAsState()
         val abrirAlterarSenha by viewModel.abrirAlterarSenha.collectAsState()
 
@@ -106,16 +108,10 @@ fun ContaScreen(viewModel: ContaViewModel, navController: NavController) {
                                 .fillMaxWidth()
                                 .padding(horizontal = 10.dp)
                 )
-                if (emailError){
-                        Text(
-                                text = "Preencha com um E-mail válido ( exemplo@email.com )",
-                                color = Color.Red,
-                                textAlign = TextAlign.End,
-                                modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 40.dp)
-                        )
-                }
+                MensagemError(
+                        mensagem = "*Preencha com um E-mail válido ( exemplo@email.com )",
+                        error = emailError
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 UserInputTextField(
                         text = "Celular",
@@ -124,9 +120,14 @@ fun ContaScreen(viewModel: ContaViewModel, navController: NavController) {
                         visualTransformation = VisualTransformation.None,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                         enabled = true,
+                        isError = celularError,
                         modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 10.dp)
+                )
+                MensagemError(
+                        mensagem = "*Preencha com um celular válido, apenas números",
+                        error = celularError
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -259,7 +260,7 @@ fun ContaScreen(viewModel: ContaViewModel, navController: NavController) {
                                 color = colorResource(id = R.color.trashIt_green),
                                 modifier = Modifier.width(140.dp)
                         ) {
-                                viewModel.emailErrorCheck()
+
                                 viewModel.updateUsuario()
                         }
                         Spacer(modifier = Modifier.width(20.dp))
@@ -324,7 +325,7 @@ fun MensagemError(mensagem: String,error: Boolean) {
                         textAlign = TextAlign.End,
                         modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 40.dp)
+                                .padding(horizontal = 20.dp)
                 )
         }
 

@@ -40,7 +40,7 @@ class LoginViewModel(context: Context): ViewModel() {
     fun login(){
         if (enderecoRepository.listarEnderecos().isEmpty()) {
             val endereco = Endereco(
-                id = 1, cep = "09211111", numero = "125", rua = "Rua Exemplo", complemento = "",
+                id = 1, cep = "09211111", numero = "111", rua = "Rua Exemplo", complemento = "",
                 bairro = "Bairro Exemplo", cidade = "Cidade Exemplo", uf = "Estado Exemplo", Lixeira()
             )
             enderecoRepository.salvar(endereco)
