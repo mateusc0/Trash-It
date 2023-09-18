@@ -42,6 +42,7 @@ fun UserInputTextField(
             )
         },
         value = value,
+        singleLine = true,
         onValueChange = { onCheckedFunction(it) },
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
